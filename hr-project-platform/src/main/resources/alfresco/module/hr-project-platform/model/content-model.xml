@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="hr:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <description>Custom HR content model for employee documents.</description>
+    <author>Martin Bergljung</author>
+    <published>2025-01-15</published>
+    <version>1.0</version>
+
+    <imports>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    </imports>
+
+    <!-- Define the Namespace for the Model -->
+    <namespaces>
+        <namespace uri="http://www.mycompany.com/model/hr/1.0" prefix="hr" />
+    </namespaces>
+
+    <constraints>
+        <constraint name="hr:statusOptions" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value></value><!-- Empty for default search-->
+                    <value>Draft</value>
+                    <value>Active</value>
+                    <value>Retired</value>
+                </list>
+            </parameter>
+        </constraint>
+    </constraints>
+
+    <!-- Define the Types in the Model -->
+    <types>
+        <!-- Employee Handbook Type -->
+        <type name="hr:employeeHandbook">
+            <title>Employee Handbook</title>
+            <description>A single, comprehensive reference document for all employees.</description>
+            <parent>cm:content</parent>
+            <properties>
+                <!-- Removed hr:summary, as it is now handled by cm:summary aspect -->
+            </properties>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+                <aspect>cm:effectivity</aspect>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- HR Policy Document Type -->
+        <type name="hr:hrPolicyDocument">
+            <title>HR Policy Document</title>
+            <description>Specific HR-related policies (e.g., “Remote Work Policy,” “Equal Opportunity Policy”).</description>
+            <parent>cm:content</parent>
+            <properties>
+                <property name="hr:reviewDate">
+                    <title>Review date</title>
+                    <type>d:date</type>>
+                </property>
+                <property name="hr:status">
+                    <title>Policy status</title>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <default>Draft</default>
+                    <constraints>
+                        <constraint ref="hr:statusOptions"/>
+                    </constraints>
+                </property>
+            </properties>
+            <associations>
+                <association name="hr:relatedDocuments">
+                    <title>Related documents</title>
+                    <source>
+                        <role>hr:hrPolicyDocument</role>
+                        <mandatory>false</mandatory>
+                        <many>false</many>
+                    </source>
+                    <target>
+                        <class>cm:content</class>
+                        <role>hr:hasRelatedDocs</role>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+                <aspect>cm:effectivity</aspect>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- HR Form Type -->
+        <type name="hr:hrForm">
+            <title>HR Form</title>
+            <description>Standardized forms employees need to fill out (e.g., “Leave Request Form”).</description>
+            <parent>cm:content</parent>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+                <aspect>cm:effectivity</aspect>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Training Guide Type -->
+        <type name="hr:trainingGuide">
+            <title>Training Guide</title>
+            <description>Simple instructional documents (e.g., “How to Access Your Pay Stubs Online”).</description>
+            <parent>cm:content</parent>
+            <properties>
+                <property name="hr:lastUpdatedDate">
+                    <title>Last updated date</title>
+                    <type>d:date</type>
+                </property>
+            </properties>
+            <associations>
+                <association name="hr:relatedPoliciesOrForms">
+                    <title>Related policies or forms</title>
+                    <source>
+                        <role>hr:trainingGuide</role>
+                        <mandatory>false</mandatory>
+                        <many>false</many>
+                    </source>
+                    <target>
+                        <class>cm:content</class>
+                        <role>hr:hasRelatedPolicies</role>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+                <aspect>cm:effectivity</aspect>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+            </mandatory-aspects>
+        </type>
+    </types>
+
+</model>
