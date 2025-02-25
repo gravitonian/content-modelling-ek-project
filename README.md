@@ -6,4 +6,6 @@ Besides the EK Project content model it also contains the HR content model and c
 
 Run with `./run.sh build_start` or `./run.bat build_start`
 
+**Note**. This project contains the Alfresco Repository (alfresco.war) and Alfresco Share UI (share.war) customizations, 
+the Alfresco Content App (Digital Workspace) UI customizations are not part if this project.
  
