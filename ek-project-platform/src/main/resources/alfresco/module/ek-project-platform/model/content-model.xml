@@ -1,85 +1,460 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model name="acme:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+<model name="ek:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
-    <!-- Optional meta-data about the model -->
-    <description>Sample Document Model</description>
-    <author>My Name</author>
+    <!-- Model description -->
+    <description>Enterprise Knowledge Content Model</description>
+    <author>Martin Bergljung with help of Claud AI</author>
     <version>1.0</version>
 
+    <!-- Import existing models -->
     <imports>
-        <!-- Import Alfresco Dictionary Definitions -->
-        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
-        <!-- Import Alfresco Content Domain Model Definitions -->
-        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
-        <!-- Import Alfresco System Model Definitions -->
-        <import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
     </imports>
 
-    <!-- Custom namespace for the ACME company -->
+    <!-- Namespace definition -->
     <namespaces>
-        <namespace uri="http://www.acme.org/model/content/1.0" prefix="acme"/>
+        <namespace uri="http://www.mycompany.com/model/ek/1.0" prefix="ek" />
     </namespaces>
 
+    <!-- Constraints -->
     <constraints>
-        <constraint name="acme:securityClassificationOptions" type="LIST">
+        <constraint name="ek:departmentConstraint" type="LIST">
             <parameter name="allowedValues">
                 <list>
-                    <value></value>
-                    <!-- Empty for default search-->
+                    <value>Finance</value>
+                    <value>IT</value>
+                    <value>Engineering</value>
+                    <value>HR</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:contractTypeConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Master Service Agreement</value>
+                    <value>Non-Disclosure Agreement</value>
+                    <value>Vendor Contract</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:contractStatusConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Draft</value>
+                    <value>Negotiation</value>
+                    <value>Signed</value>
+                    <value>Expired</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:complianceStatusConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Compliant</value>
+                    <value>Under Review</value>
+                    <value>Non-compliant</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:confidentialityLevelConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
                     <value>Public</value>
-                    <value>Client Confidential</value>
-                    <value>Company Confidential</value>
-                    <value>Strictly Confidential</value>
+                    <value>Internal Only</value>
+                    <value>Restricted</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:reportTypeConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Annual</value>
+                    <value>Quarterly</value>
+                    <value>Audit</value>
+                    <value>Incident Report</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:profileTypeConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Supplier</value>
+                    <value>Client</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:certificationConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>ISO 9001</value>
+                    <value>ISO 27001</value>
+                    <value>FDA Approved</value>
+                    <value>HIPAA Compliant</value>
+                    <value>GDPR Compliant</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:approvalWorkflowStateConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Draft</value>
+                    <value>In Review</value>
+                    <value>Approved</value>
+                    <value>Published</value>
+                    <value>Archived</value>
+                </list>
+            </parameter>
+        </constraint>
+
+        <constraint name="ek:reviewIntervalConstraint" type="LIST">
+            <parameter name="allowedValues">
+                <list>
+                    <value>Annual (1 year)</value>
+                    <value>Every 2 Years</value>
+                    <value>3‐Year Cycle (FDA-SOP)</value>
+                    <value>Quarterly (Finance)</value>
+                    <value>Event driven</value>
                 </list>
             </parameter>
         </constraint>
     </constraints>
 
-    <!-- ===============================================================================================================
-        Constraints, Types, and Aspects go here...
-        -->
-
+    <!-- Type and aspect definitions -->
     <types>
-        <!--
-            ACME Enterprise-wide Document root type.
-            All other custom document types would extend this one.
-        -->
-        <type name="acme:document">
-            <title>Sample Document Type</title>
+        <!-- Base EK Document Type -->
+        <type name="ek:documentBase">
+            <title>EK Document Base</title>
+            <description>Base EK document type that should be inherited by all other EK types</description>
             <parent>cm:content</parent>
             <properties>
-                <property name="acme:documentId">
-                    <title>Document Identification Number</title>
+                <property name="ek:docId">
+                    <title>Document ID</title>
+                    <description>Company wide document identifier</description>
                     <type>d:text</type>
-                </property>
-            </properties>
-            <mandatory-aspects>
-                <aspect>acme:securityClassified</aspect>
-            </mandatory-aspects>
-        </type>
-    </types>
-
-    <aspects>
-        <!-- A document can have security classification applied and
-             faceted search is specifically enabled for best performance and we change
-             default index config to not tokenize the value. -->
-        <aspect name="acme:securityClassified">
-            <title>ACME Security Classified</title>
-            <description>Content has been security classified</description>
-            <properties>
-                <property name="acme:securityClassification">
-                    <type>d:text</type>
+                    <mandatory>false</mandatory>
                     <index enabled="true">
                         <atomic>true</atomic>
                         <stored>false</stored>
                         <tokenised>false</tokenised>
                     </index>
+                </property>
+            </properties>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Corporate Policy Document Type -->
+        <type name="ek:corporatePolicyDocument">
+            <title>Corporate Policy Document</title>
+            <description>Internal corporate policies outlining compliance, HR guidelines, code of conduct, or data privacy rules</description>
+            <parent>ek:documentBase</parent>
+            <properties>
+                <property name="ek:policyRetentionPeriod">
+                    <title>Retention Period</title>
+                    <description>Numeric field (in years) for compliance tracking</description>
+                    <type>d:int</type>
+                    <mandatory>true</mandatory>
+                </property>
+            </properties>
+            <mandatory-aspects>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+                <aspect>cm:author</aspect> <!-- added manually, removed the generated property above -->
+                <aspect>ek:regulatoryFramework</aspect>
+                <aspect>ek:regulatoryEffective</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Procedure Document Type -->
+        <type name="ek:procedureDocument">
+            <title>Procedure Document</title>
+            <description>Step-by-step methods or SOPs (Standard Operating Procedures) for internal processes</description>
+            <parent>ek:documentBase</parent>
+            <properties>
+                <property name="ek:procedureResponsibleDepartment">
+                    <title>Responsible Department</title>
+                    <description>Department responsible for the procedure</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
                     <constraints>
-                        <constraint ref="acme:securityClassificationOptions"/>
+                        <constraint ref="ek:departmentConstraint" />
+                    </constraints>
+                </property>
+            </properties>
+            <associations>
+                <association name="ek:procedureRelatedPolicies">
+                    <title>Related Policies</title>
+                    <description>Reference to one or more Corporate Policy Documents that this procedure implements or supports</description>
+                    <source>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </source>
+                    <target>
+                        <class>ek:corporatePolicyDocument</class>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:versionable</aspect>
+                <aspect>cm:summarizable</aspect>
+                <aspect>ek:regulatoryEffective</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Contract Document Type -->
+        <type name="ek:contractDocument">
+            <title>Contract Document</title>
+            <description>Legal agreements with clients, partners, or suppliers</description>
+            <parent>ek:documentBase</parent>
+            <properties>
+                <property name="ek:contractPartyA">
+                    <title>Party A (Company)</title>
+                    <description>Reference to internal Business Unit entity</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="ek:contractEffectiveDate">
+                    <title>Effective Date</title>
+                    <description>Date of contract start</description>
+                    <type>d:date</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="ek:contractExpirationDate">
+                    <title>Expiration Date</title>
+                    <description>Date of contract end or renewal</description>
+                    <type>d:date</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="ek:contractType">
+                    <title>Contract Type</title>
+                    <description>Type of contract agreement</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:contractTypeConstraint" />
+                    </constraints>
+                </property>
+                <property name="ek:contractStatus">
+                    <title>Status</title>
+                    <description>Current status of the contract</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:contractStatusConstraint" />
+                    </constraints>
+                </property>
+            </properties>
+            <associations>
+                <association name="ek:contractPartyB">
+                    <title>Party B (External Entity)</title>
+                    <description>Reference to a Supplier or Client entity</description>
+                    <source>
+                        <mandatory>true</mandatory>
+                        <many>false</many>
+                    </source>
+                    <target>
+                        <class>ek:supplierClientProfileData</class>
+                        <mandatory>true</mandatory>
+                        <many>false</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:versionable</aspect>
+                <aspect>ek:regulatoryFramework</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Compliance Report Document Type -->
+        <type name="ek:complianceReportDocument">
+            <title>Compliance Report Document</title>
+            <description>Reports generated for regulatory audits (financial disclosures, environmental compliance reports, internal audit findings)</description>
+            <parent>ek:documentBase</parent>
+            <properties>
+                <property name="ek:reportType">
+                    <title>Report Type</title>
+                    <description>Type of compliance report</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:reportTypeConstraint" />
+                    </constraints>
+                </property>
+                <property name="ek:complianceStatus">
+                    <title>Compliance Status</title>
+                    <description>Current compliance status</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:complianceStatusConstraint" />
+                    </constraints>
+                </property>
+                <property name="ek:confidentialityLevel">
+                    <title>Confidentiality Level</title>
+                    <description>Level of confidentiality for the report</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:confidentialityLevelConstraint" />
+                    </constraints>
+                </property>
+            </properties>
+            <associations>
+                <association name="ek:reportAssociatedDocuments">
+                    <title>Associated Policies or Procedures</title>
+                    <description>References to related policies/procedures</description>
+                    <source>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </source>
+                    <target>
+                        <class>ek:documentBase</class>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:summarizable</aspect>
+                <aspect>ek:regulatoryFramework</aspect>
+            </mandatory-aspects>
+        </type>
+
+        <!-- Supplier/Client Profile Data Type (non-content node) -->
+        <type name="ek:supplierClientProfileData">
+            <title>Supplier/Client Profile Data</title>
+            <description>Master data entity for companies involved in contracts or agreements</description>
+            <parent>cm:cmobject</parent>
+            <properties>
+                <property name="ek:profileName">
+                    <title>Name</title>
+                    <description>Name of the supplier or client</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="ek:profileType">
+                    <title>Type</title>
+                    <description>Type of profile (Supplier or Client)</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:profileTypeConstraint" />
+                    </constraints>
+                </property>
+                <property name="ek:contactAddress">
+                    <title>Contact Address</title>
+                    <description>Address of the supplier or client</description>
+                    <type>d:text</type>
+                    <mandatory>false</mandatory>
+                </property>
+                <property name="ek:contactPhone">
+                    <title>Contact Phone</title>
+                    <description>Phone number of the supplier or client</description>
+                    <type>d:text</type>
+                    <mandatory>false</mandatory>
+                </property>
+                <property name="ek:contactEmail">
+                    <title>Contact Email</title>
+                    <description>Email address of the supplier or client</description>
+                    <type>d:text</type>
+                    <mandatory>false</mandatory>
+                </property>
+                <property name="ek:complianceCertifications">
+                    <title>Compliance Certifications</title>
+                    <description>List of compliance certifications</description>
+                    <type>d:text</type>
+                    <mandatory>false</mandatory>
+                    <multiple>true</multiple>
+                    <constraints>
+                        <constraint ref="ek:certificationConstraint" />
+                    </constraints>
+                </property>
+            </properties>
+            <associations>
+                <association name="ek:profileRelatedContracts">
+                    <title>Related Contracts</title>
+                    <description>References to Contract Documents</description>
+                    <source>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </source>
+                    <target>
+                        <class>ek:contractDocument</class>
+                        <mandatory>false</mandatory>
+                        <many>true</many>
+                    </target>
+                </association>
+            </associations>
+            <mandatory-aspects>
+                <aspect>cm:titled</aspect>
+            </mandatory-aspects>
+        </type>
+    </types>
+
+    <!-- Custom aspects -->
+    <aspects>
+        <!-- Regulatory Framework aspect -->
+        <aspect name="ek:regulatoryFramework">
+            <title>Regulatory Framework</title>
+            <description>References to external regulations stored as categories</description>
+            <parent>cm:classifiable</parent>
+            <properties>
+                <property name="ek:regulatoryFrameworks">
+                    <title>Regulatory Frameworks</title>
+                    <type>d:category</type>
+                    <mandatory>false</mandatory>
+                    <multiple>true</multiple>
+                    <index enabled="true">
+                        <atomic>true</atomic>
+                        <stored>true</stored>
+                        <tokenised>false</tokenised>
+                    </index>
+                </property>
+            </properties>
+        </aspect>
+
+        <!-- Regulatory Effective aspect -->
+        <aspect name="ek:regulatoryEffective">
+            <title>Regulatory Effective</title>
+            <description>Specifies when a document is effective and in what approval state it is</description>
+            <properties>
+                <property name="ek:effectiveDate">
+                    <title>Effective Date</title>
+                    <description>Date the document becomes active</description>
+                    <type>d:date</type>
+                    <mandatory>true</mandatory>
+                </property>
+                <property name="ek:reviewInterval">
+                    <title>Review Interval</title>
+                    <description>The interval at which the document should be reviewed</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:reviewIntervalConstraint" />
+                    </constraints>
+                </property>
+                <property name="ek:approvalWorkflowState">
+                    <title>Approval Workflow State</title>
+                    <description>Current state of the document in the approval workflow</description>
+                    <type>d:text</type>
+                    <mandatory>true</mandatory>
+                    <constraints>
+                        <constraint ref="ek:approvalWorkflowStateConstraint" />
                     </constraints>
                 </property>
             </properties>
         </aspect>
     </aspects>
-
 </model>

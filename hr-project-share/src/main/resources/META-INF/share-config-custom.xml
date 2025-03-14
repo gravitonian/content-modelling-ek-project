@@ -19,13 +19,9 @@
            Advanced Search Forms for types (search forms for aspects are not available)
        =============================================================================================================-->
 
-    <config evaluator="string-compare" condition="AdvancedSearch" replace="true">
+    <config evaluator="string-compare" condition="AdvancedSearch">
         <advanced-search>
             <forms>
-                <!-- Standard out-of-the-box types -->
-                <form labelId="search.form.label.cm_content" descriptionId="search.form.desc.cm_content">cm:content</form>
-                <form labelId="search.form.label.cm_folder" descriptionId="search.form.desc.cm_folder">cm:folder</form>
-
                 <!-- Custom types -->
                 <form label="HR Employee Handbook" description="Search for HR Employee Handbooks">hr:employeeHandbook</form>
                 <form label="HR Policy Document" description="Search for HR Policy Documents">hr:hrPolicyDocument</form>

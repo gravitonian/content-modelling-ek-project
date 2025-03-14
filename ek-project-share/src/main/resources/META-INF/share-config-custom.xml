@@ -1,94 +1,61 @@
-<!-- Share configuration related to this particular Share module extension, such as:
-     - Doclib action config
-     - Form config
-     - Aspect and Type config
-     - Advanced Search
-
-    Note. Any configuration related to the whole Share.war webapp
-           (i.e. not specific to this share extension) should be
-            placed in the environment specific config file:
-             alfresco/tomcat/shared/classes/alfresco/web-extension/share-config-custom.xml
-     -->
+<?xml version="1.0" encoding="UTF-8"?>
 <alfresco-config>
-    <!--================================================================================================================
-        Make custom types and aspects visible in "Change Type" and "Manage Aspects" actions.
-         This will also make them visible when creating rules.
-        (will be merged with out-of-the-box configured types and aspects)
-    =============================================================================================================-->
 
+    <!--================================================================================================================
+     Make custom types available in "Change Type" form and in the Rules forms
+       =============================================================================================================-->
     <config evaluator="string-compare" condition="DocumentLibrary">
-        <aspects>
-            <visible>
-                <aspect name="acme:securityClassified"/>
-            </visible>
-            <addable> <!-- defaults to visible config -->
-            </addable>
-            <removeable> <!-- defaults to visible config -->
-            </removeable>
-        </aspects>
         <types>
-            <!-- Define the ACME base doc type as decedent from cm:content -->
             <type name="cm:content">
-                <subtype name="acme:document"/>
+                <!-- Custom types -->
+                <subtype name="ek:corporatePolicyDocument" label="Corporate Policy Document" />
+                <subtype name="ek:procedureDocument" label="Procedure Document" />
+                <subtype name="ek:contractDocument" label="Contract Document" />
+                <subtype name="ek:complianceReportDocument" label="Compliance Report Document" />
             </type>
         </types>
     </config>
 
     <!--================================================================================================================
-          Advanced Search Forms for types
-          (search forms for aspects are not available)
-      =============================================================================================================-->
+           Advanced Search Forms for types (search forms for aspects are not available)
+       =============================================================================================================-->
 
-    <config evaluator="string-compare" condition="AdvancedSearch" replace="true">
+    <config evaluator="string-compare" condition="AdvancedSearch">
         <advanced-search>
             <forms>
-                <!-- Standard out-of-the-box types -->
-                <form labelId="search.form.label.cm_content" descriptionId="search.form.desc.cm_content">cm:content
-                </form>
-                <form labelId="search.form.label.cm_folder" descriptionId="search.form.desc.cm_folder">cm:folder</form>
-
-                <!-- Custom type -->
-                <form labelId="form.label.advancedsearch.acmeDocument"
-                      descriptionId="form.description.advancedsearch.acmeDocument">acme:document
-                </form>
+                <!-- Custom types -->
+                <form labelId="form.label.advancedsearch.corporatePolicyDocument" descriptionId="form.description.advancedsearch.corporatePolicyDocument">ek:corporatePolicyDocument</form>
+                <form labelId="form.label.advancedsearch.procedureDocument" descriptionId="form.description.advancedsearch.procedureDocument">ek:procedureDocument</form>
+                <form labelId="form.label.advancedsearch.contractDocument" descriptionId="form.description.advancedsearch.contractDocument">ek:contractDocument</form>
+                <form labelId="form.label.advancedsearch.complianceReportDocument" descriptionId="form.description.advancedsearch.complianceReportDocument">ek:complianceReportDocument</form>
             </forms>
         </advanced-search>
     </config>
 
-    <!--================================================================================================================
-         View, Edit, Create, and Search forms for custom types
+    <!-- =========================================================
+         FORM CONFIGURATION FOR ek:corporatePolicyDocument
+         ========================================================= -->
 
-         The following form configurations for the custom types
-         have not been created from scratch. We have instead copied
-         out-of-the-box form configurations for cm:content and cm:folder
-         from the tomcat/webapps/share/WEB-INF/classes/alfresco/share-form-config.xml file
-         in a standard Alfresco installation (with the version matching)
-         and used them as a starting point.
-
-        =============================================================================================================-->
-
-    <!-- __________________________________ acme:document base type _________________________________________________-->
-
-    <!-- View and Edit forms for acme:document -->
-    <config evaluator="node-type" condition="acme:document">
+    <config evaluator="node-type" condition="ek:corporatePolicyDocument">
         <forms>
-            <!-- Default form configuration for the cm:content type -->
+            <!-- Default View and Edit Form, if none other is found -->
             <form>
                 <field-visibility>
-                    <show id="cm:name"/>
-                    <show id="cm:title" force="true"/>
-                    <show id="cm:description" force="true"/>
-                    <show id="mimetype"/>
-                    <show id="cm:author" force="true"/>
-                    <show id="size" for-mode="view"/>
-                    <show id="cm:creator" for-mode="view"/>
-                    <show id="cm:created" for-mode="view"/>
-                    <show id="cm:modifier" for-mode="view"/>
-                    <show id="cm:modified" for-mode="view"/>
+                    <!-- Standard out-of-box fields -->
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <show id="mimetype" />
+                    <!-- <show id="cm:author" force="true" />-->
+                    <show id="size" for-mode="view" />
+                    <show id="cm:creator" for-mode="view" />
+                    <show id="cm:created" for-mode="view" />
+                    <show id="cm:modifier" for-mode="view" />
+                    <show id="cm:modified" for-mode="view" />
 
                     <!-- tags and categories -->
-                    <show id="cm:taggable" for-mode="edit" force="true"/>
-                    <show id="cm:categories"/>
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
 
                     <!-- cm:dublincore aspect -->
                     <show id="cm:publisher"/>
@@ -101,89 +68,95 @@
                     <show id="cm:subject"/>
 
                     <!-- cm:complianceable aspect -->
-                    <show id="cm:removeAfter"/>
+                    <show id="cm:removeAfter" />
 
                     <!-- cm:effectivity aspect -->
                     <show id="cm:from"/>
                     <show id="cm:to"/>
 
                     <!--  cm:summarizable aspect -->
-                    <show id="cm:summary"/>
+                    <show id="cm:summary" />
 
                     <!-- cm:translatable aspect -->
-                    <show id="cm:translations"/>
+                    <show id="cm:translations" />
 
                     <!-- cm:localizable aspect -->
-                    <show id="cm:locale"/>
+                    <show id="cm:locale" />
 
                     <!-- cm:ownable aspect -->
-                    <show id="cm:owner"/>
+                    <show id="cm:owner" />
 
                     <!-- cm:attachable aspect -->
-                    <show id="cm:attachments"/>
+                    <show id="cm:attachments" />
 
                     <!-- cm:emailed aspect -->
-                    <show id="cm:originator"/>
-                    <show id="cm:addressee"/>
-                    <show id="cm:addressees"/>
-                    <show id="cm:sentdate"/>
-                    <show id="cm:subjectline"/>
+                    <show id="cm:originator" />
+                    <show id="cm:addressee" />
+                    <show id="cm:addressees" />
+                    <show id="cm:sentdate" />
+                    <show id="cm:subjectline" />
 
                     <!-- exif:exif aspect -->
-                    <show id="exif:dateTimeOriginal"/>
-                    <show id="exif:pixelXDimension"/>
-                    <show id="exif:pixelYDimension"/>
-                    <show id="exif:exposureTime"/>
-                    <show id="exif:fNumber"/>
-                    <show id="exif:flash"/>
-                    <show id="exif:focalLength"/>
-                    <show id="exif:isoSpeedRatings"/>
-                    <show id="exif:manufacturer"/>
-                    <show id="exif:model"/>
-                    <show id="exif:software"/>
-                    <show id="exif:orientation"/>
-                    <show id="exif:xResolution"/>
-                    <show id="exif:yResolution"/>
-                    <show id="exif:resolutionUnit"/>
+                    <show id="exif:dateTimeOriginal" />
+                    <show id="exif:pixelXDimension" />
+                    <show id="exif:pixelYDimension" />
+                    <show id="exif:exposureTime" />
+                    <show id="exif:fNumber" />
+                    <show id="exif:flash" />
+                    <show id="exif:focalLength" />
+                    <show id="exif:isoSpeedRatings" />
+                    <show id="exif:manufacturer" />
+                    <show id="exif:model" />
+                    <show id="exif:software" />
+                    <show id="exif:orientation" />
+                    <show id="exif:xResolution" />
+                    <show id="exif:yResolution" />
+                    <show id="exif:resolutionUnit" />
 
                     <!-- audio:audio aspect -->
-                    <show id="audio:album"/>
-                    <show id="audio:artist"/>
-                    <show id="audio:composer"/>
-                    <show id="audio:engineer"/>
-                    <show id="audio:genre"/>
-                    <show id="audio:trackNumber"/>
-                    <show id="audio:releaseDate"/>
-                    <show id="audio:sampleRate"/>
-                    <show id="audio:sampleType"/>
-                    <show id="audio:channelType"/>
-                    <show id="audio:compressor"/>
+                    <show id="audio:album" />
+                    <show id="audio:artist" />
+                    <show id="audio:composer" />
+                    <show id="audio:engineer" />
+                    <show id="audio:genre" />
+                    <show id="audio:trackNumber" />
+                    <show id="audio:releaseDate" />
+                    <show id="audio:sampleRate" />
+                    <show id="audio:sampleType" />
+                    <show id="audio:channelType" />
+                    <show id="audio:compressor" />
 
                     <!-- cm:indexControl aspect -->
-                    <show id="cm:isIndexed"/>
-                    <show id="cm:isContentIndexed"/>
+                    <show id="cm:isIndexed" />
+                    <show id="cm:isContentIndexed" />
 
                     <!-- cm:geographic aspect -->
-                    <show id="cm:latitude"/>
-                    <show id="cm:longitude"/>
+                    <show id="cm:latitude" />
+                    <show id="cm:longitude" />
 
                     <!-- surf:widget aspect -->
                     <show id="surf:widgetType"/>
                     <show id="surf:mid"/>
                     <show id="surf:label"/>
 
-                    <!-- ACME custom props -->
-                    <show id="acme:documentId" force="true"/>
-                    <show id="acme:securityClassification"/>
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="cm:author"/>
+                    <show id="ek:policyRetentionPeriod"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                    <show id="ek:regulatoryFrameworks"/>
                 </field-visibility>
                 <appearance>
+                    <!-- Standard out-of-box fields -->
                     <field id="cm:name">
                         <control>
                             <control-param name="maxLength">255</control-param>
                         </control>
                     </field>
                     <field id="cm:title">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
                     </field>
                     <field id="cm:description">
                         <control>
@@ -191,19 +164,19 @@
                         </control>
                     </field>
 
-                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl"/>
+                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl" />
 
                     <field set="cm:content2cols" id="mimetype">
-                        <control template="/org/alfresco/components/form/controls/mimetype.ftl"/>
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl" />
                     </field>
 
                     <field set="cm:content2cols" id="size">
-                        <control template="/org/alfresco/components/form/controls/size.ftl"/>
+                        <control template="/org/alfresco/components/form/controls/size.ftl" />
                     </field>
-                    <field set="cm:content2cols" id="cm:creator"/>
-                    <field set="cm:content2cols" id="cm:created"/>
-                    <field set="cm:content2cols" id="cm:modifier"/>
-                    <field set="cm:content2cols" id="cm:modified"/>
+                    <field set="cm:content2cols" id="cm:creator" />
+                    <field set="cm:content2cols" id="cm:created" />
+                    <field set="cm:content2cols" id="cm:modifier" />
+                    <field set="cm:content2cols" id="cm:modified" />
 
                     <field id="cm:taggable">
                         <control>
@@ -218,37 +191,44 @@
                             <control-param name="compactMode">true</control-param>
                         </control>
                     </field>
-                    <field id="cm:originator" read-only="true"/>
-                    <field id="cm:addressee" read-only="true"/>
-                    <field id="cm:addressees" read-only="true"/>
-                    <field id="cm:sentdate" read-only="true"/>
-                    <field id="cm:subjectline" read-only="true"/>
+                    <field id="cm:originator" read-only="true" />
+                    <field id="cm:addressee" read-only="true" />
+                    <field id="cm:addressees" read-only="true" />
+                    <field id="cm:sentdate" read-only="true" />
+                    <field id="cm:subjectline" read-only="true" />
 
-                    <!-- ACME Props appearance -->
-                    <set id="acmeDocSet" appearance="bordered-panel" label-id="form.set.label.acme.document"/>
-                    <field id="acme:documentId" label-id="form.field.label.acme.documentId" set="acmeDocSet">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="acme:securityClassification" label-id="form.field.label.acme.securityClassification"
-                           set="acmeDocSet"/>
+                    <!-- Custom fields -->
+                    <set id="corporatePolicyDocumentSet" appearance="bordered-panel" label-id="form.set.label.corporatePolicyDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="corporatePolicyDocumentSet"/>
+                    <field id="cm:author" label-id="form.field.label.docAuthor" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:policyRetentionPeriod" label-id="form.field.label.policyRetentionPeriod" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
                 </appearance>
             </form>
 
-            <!-- Document Library pop-up Edit Metadata form -->
+            <!-- Document Library pop-up "Edit Properties" form -->
             <form id="doclib-simple-metadata">
                 <field-visibility>
-                    <show id="cm:name"/>
-                    <show id="cm:title" force="true"/>
-                    <show id="cm:description" force="true"/>
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
                     <!-- tags and categories -->
-                    <show id="cm:taggable" for-mode="edit" force="true"/>
-                    <show id="cm:categories"/>
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
 
-                    <!-- ACME custom props -->
-                    <show id="acme:documentId" force="true"/>
-                    <show id="acme:securityClassification"/>
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="cm:author"/>
+                    <show id="ek:policyRetentionPeriod"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                    <show id="ek:regulatoryFrameworks"/>
                 </field-visibility>
-                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl"/>
+                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
                 <appearance>
                     <field id="cm:name">
                         <control>
@@ -256,7 +236,7 @@
                         </control>
                     </field>
                     <field id="cm:title">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
                     </field>
                     <field id="cm:description">
                         <control>
@@ -277,27 +257,34 @@
                         </control>
                     </field>
 
-                    <!-- ACME Props appearance -->
-                    <set id="acmeDocSet" appearance="bordered-panel" label-id="form.set.label.acme.document"/>
-                    <field id="acme:documentId" label-id="form.field.label.acme.documentId" set="acmeDocSet">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="acme:securityClassification" label-id="form.field.label.acme.securityClassification"
-                           set="acmeDocSet"/>
+                    <!-- Custom fields -->
+                    <set id="corporatePolicyDocumentSet" appearance="bordered-panel" label-id="form.set.label.corporatePolicyDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="corporatePolicyDocumentSet"/>
+                    <field id="cm:author" label-id="form.field.label.docAuthor" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:policyRetentionPeriod" label-id="form.field.label.policyRetentionPeriod" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
                 </appearance>
             </form>
 
-            <!-- Document Library Inline Edit form -->
+            <!-- Document Library "Edit in Alfresco Share" - when you edit content and metadata at the same time -->
             <form id="doclib-inline-edit">
                 <field-visibility>
-                    <show id="cm:name"/>
-                    <show id="cm:content" force="true"/>
-                    <show id="cm:title" force="true"/>
-                    <show id="cm:description" force="true"/>
+                    <show id="cm:name" />
+                    <show id="cm:content" force="true" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
 
-                    <!-- ACME custom props -->
-                    <show id="acme:documentId" force="true"/>
-                    <show id="acme:securityClassification"/>
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="cm:author"/>
+                    <show id="ek:policyRetentionPeriod"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                    <show id="ek:regulatoryFrameworks"/>
                 </field-visibility>
                 <appearance>
                     <field id="cm:name">
@@ -306,7 +293,7 @@
                         </control>
                     </field>
                     <field id="cm:title">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
                     </field>
                     <field id="cm:content" label-id="">
                         <control>
@@ -315,68 +302,26 @@
                         </control>
                     </field>
 
-                    <!-- ACME Props appearance -->
-                    <set id="acmeDocSet" appearance="bordered-panel" label-id="form.set.label.acme.document"/>
-                    <field id="acme:documentId" label-id="form.field.label.acme.documentId" set="acmeDocSet">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="acme:securityClassification" label-id="form.field.label.acme.securityClassification"
-                           set="acmeDocSet"/>
+                    <!-- Custom fields -->
+                    <set id="corporatePolicyDocumentSet" appearance="bordered-panel" label-id="form.set.label.corporatePolicyDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="corporatePolicyDocumentSet"/>
+                    <field id="cm:author" label-id="form.field.label.docAuthor" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:policyRetentionPeriod" label-id="form.field.label.policyRetentionPeriod" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
                 </appearance>
             </form>
         </forms>
     </config>
 
-    <!-- Create and search forms for acme:document -->
-    <config evaluator="model-type" condition="acme:document">
+    <!-- =========================================================
+         SEARCH FORM CONFIGURATION FOR ek:corporatePolicyDocument
+         ========================================================= -->
+
+    <config evaluator="model-type" condition="ek:corporatePolicyDocument">
         <forms>
-            <form>
-                <field-visibility>
-                    <show id="cm:name"/>
-                    <show id="cm:content" force="true"/>
-                    <show id="cm:title" force="true"/>
-                    <show id="cm:description" force="true"/>
-                    <show id="mimetype"/>
-                    <show id="app:editInline" force="true"/>
-
-                    <!-- ACME custom props -->
-                    <show id="acme:documentId" force="true"/>
-                    <show id="acme:securityClassification"/>
-                </field-visibility>
-                <appearance>
-                    <field id="cm:name">
-                        <control>
-                            <control-param name="maxLength">255</control-param>
-                        </control>
-                    </field>
-                    <field id="cm:title">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="cm:content" label-id="">
-                        <control>
-                            <control-param name="editorAppearance">explorer</control-param>
-                        </control>
-                    </field>
-                    <field id="mimetype">
-                        <control template="/org/alfresco/components/form/controls/hidden.ftl">
-                            <control-param name="contextProperty">mimeType</control-param>
-                        </control>
-                    </field>
-                    <field id="app:editInline">
-                        <control template="/org/alfresco/components/form/controls/hidden.ftl">
-                            <control-param name="contextProperty">editInline</control-param>
-                        </control>
-                    </field>
-
-                    <!-- ACME Props appearance -->
-                    <set id="acmeDocSet" appearance="bordered-panel" label-id="form.set.label.acme.document"/>
-                    <field id="acme:documentId" label-id="form.field.label.acme.documentId" set="acmeDocSet">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="acme:securityClassification" label-id="form.field.label.acme.securityClassification"
-                           set="acmeDocSet"/>
-                </appearance>
-            </form>
             <!-- Search form -->
             <form id="search">
                 <field-visibility>
@@ -387,9 +332,12 @@
                     <show id="cm:modified"/>
                     <show id="cm:modifier"/>
 
-                    <!-- ACME custom props -->
-                    <show id="acme:documentId" force="true"/>
-                    <show id="acme:securityClassification"/>
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:policyRetentionPeriod"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
                 </field-visibility>
                 <appearance>
                     <field id="mimetype">
@@ -404,17 +352,1019 @@
                         <control template="/org/alfresco/components/form/controls/daterange.ftl"/>
                     </field>
 
-                    <!-- ACME Props appearance -->
-                    <set id="acmeDocSet" appearance="bordered-panel" label-id="form.set.label.acme.document"/>
-                    <field id="acme:documentId" label-id="form.field.label.acme.documentId" set="acmeDocSet">
-                        <control template="/org/alfresco/components/form/controls/textfield.ftl"/>
-                    </field>
-                    <field id="acme:securityClassification" label-id="form.field.label.acme.securityClassification"
-                           set="acmeDocSet"/>
+                    <!-- Custom fields -->
+                    <set id="corporatePolicyDocumentSet" appearance="bordered-panel" label-id="form.set.label.corporatePolicyDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:policyRetentionPeriod" label-id="form.field.label.policyRetentionPeriod" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
                 </appearance>
             </form>
         </forms>
     </config>
 
+    <!-- =========================================================
+         FORM CONFIGURATION FOR ek:procedureDocument
+         ========================================================= -->
 
+    <config evaluator="node-type" condition="ek:procedureDocument">
+        <forms>
+            <!-- Default View and Edit Form -->
+            <form>
+                <field-visibility>
+                    <!-- Standard out-of-box fields -->
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <show id="mimetype" />
+                   <!-- <show id="cm:author" force="true" />-->
+                    <show id="size" for-mode="view" />
+                    <show id="cm:creator" for-mode="view" />
+                    <show id="cm:created" for-mode="view" />
+                    <show id="cm:modifier" for-mode="view" />
+                    <show id="cm:modified" for-mode="view" />
+
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- cm:dublincore aspect -->
+                    <show id="cm:publisher"/>
+                    <show id="cm:contributor"/>
+                    <show id="cm:type"/>
+                    <show id="cm:identifier"/>
+                    <show id="cm:dcsource"/>
+                    <show id="cm:coverage"/>
+                    <show id="cm:rights"/>
+                    <show id="cm:subject"/>
+
+                    <!-- cm:complianceable aspect -->
+                    <show id="cm:removeAfter" />
+
+                    <!-- cm:effectivity aspect -->
+                    <show id="cm:from"/>
+                    <show id="cm:to"/>
+
+                    <!--  cm:summarizable aspect -->
+                    <show id="cm:summary" />
+
+                    <!-- cm:translatable aspect -->
+                    <show id="cm:translations" />
+
+                    <!-- cm:localizable aspect -->
+                    <show id="cm:locale" />
+
+                    <!-- cm:ownable aspect -->
+                    <show id="cm:owner" />
+
+                    <!-- cm:attachable aspect -->
+                    <show id="cm:attachments" />
+
+                    <!-- cm:emailed aspect -->
+                    <show id="cm:originator" />
+                    <show id="cm:addressee" />
+                    <show id="cm:addressees" />
+                    <show id="cm:sentdate" />
+                    <show id="cm:subjectline" />
+
+                    <!-- exif:exif aspect -->
+                    <show id="exif:dateTimeOriginal" />
+                    <show id="exif:pixelXDimension" />
+                    <show id="exif:pixelYDimension" />
+                    <show id="exif:exposureTime" />
+                    <show id="exif:fNumber" />
+                    <show id="exif:flash" />
+                    <show id="exif:focalLength" />
+                    <show id="exif:isoSpeedRatings" />
+                    <show id="exif:manufacturer" />
+                    <show id="exif:model" />
+                    <show id="exif:software" />
+                    <show id="exif:orientation" />
+                    <show id="exif:xResolution" />
+                    <show id="exif:yResolution" />
+                    <show id="exif:resolutionUnit" />
+
+                    <!-- audio:audio aspect -->
+                    <show id="audio:album" />
+                    <show id="audio:artist" />
+                    <show id="audio:composer" />
+                    <show id="audio:engineer" />
+                    <show id="audio:genre" />
+                    <show id="audio:trackNumber" />
+                    <show id="audio:releaseDate" />
+                    <show id="audio:sampleRate" />
+                    <show id="audio:sampleType" />
+                    <show id="audio:channelType" />
+                    <show id="audio:compressor" />
+
+                    <!-- cm:indexControl aspect -->
+                    <show id="cm:isIndexed" />
+                    <show id="cm:isContentIndexed" />
+
+                    <!-- cm:geographic aspect -->
+                    <show id="cm:latitude" />
+                    <show id="cm:longitude" />
+
+                    <!-- surf:widget aspect -->
+                    <show id="surf:widgetType"/>
+                    <show id="surf:mid"/>
+                    <show id="surf:label"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:procedureResponsibleDepartment"/>
+                    <show id="ek:procedureRelatedPolicies"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                </field-visibility>
+                <appearance>
+                    <!-- Standard out-of-box fields -->
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+
+                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl" />
+
+                    <field set="cm:content2cols" id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl" />
+                    </field>
+
+                    <field set="cm:content2cols" id="size">
+                        <control template="/org/alfresco/components/form/controls/size.ftl" />
+                    </field>
+                    <field set="cm:content2cols" id="cm:creator" />
+                    <field set="cm:content2cols" id="cm:created" />
+                    <field set="cm:content2cols" id="cm:modifier" />
+                    <field set="cm:content2cols" id="cm:modified" />
+
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:originator" read-only="true" />
+                    <field id="cm:addressee" read-only="true" />
+                    <field id="cm:addressees" read-only="true" />
+                    <field id="cm:sentdate" read-only="true" />
+                    <field id="cm:subjectline" read-only="true" />
+
+                    <!-- Custom fields -->
+                    <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
+                    <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                </appearance>
+            </form>
+
+            <!-- Document Library pop-up "Edit Properties" form -->
+            <form id="doclib-simple-metadata">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:procedureResponsibleDepartment"/>
+                    <show id="ek:procedureRelatedPolicies"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                </field-visibility>
+                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
+                    <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                </appearance>
+            </form>
+
+            <!-- Document Library "Edit in Alfresco Share" form -->
+            <form id="doclib-inline-edit">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:content" force="true" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:procedureResponsibleDepartment"/>
+                    <show id="ek:procedureRelatedPolicies"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                </field-visibility>
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:content" label-id="">
+                        <control>
+                            <control-param name="editorAppearance">explorer</control-param>
+                            <control-param name="forceEditor">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
+                    <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- =========================================================
+         SEARCH FORM CONFIGURATION FOR ek:procedureDocument
+         ========================================================= -->
+
+    <config evaluator="model-type" condition="ek:procedureDocument">
+        <forms>
+            <!-- Search form -->
+            <form id="search">
+                <field-visibility>
+                    <show id="cm:name"/>
+                    <show id="cm:title" force="true"/>
+                    <show id="cm:description" force="true"/>
+                    <show id="mimetype"/>
+                    <show id="cm:modified"/>
+                    <show id="cm:modifier"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:procedureResponsibleDepartment"/>
+                    <show id="ek:effectiveDate"/>
+                    <show id="ek:reviewInterval"/>
+                    <show id="ek:approvalWorkflowState"/>
+                </field-visibility>
+                <appearance>
+                    <field id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl"/>
+                    </field>
+                    <field id="cm:modifier">
+                        <control>
+                            <control-param name="forceEditable">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:modified">
+                        <control template="/org/alfresco/components/form/controls/daterange.ftl"/>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
+                    <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
+                    <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
+                    <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
+                    <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- =========================================================
+         FORM CONFIGURATION FOR ek:contractDocument
+         ========================================================= -->
+
+    <config evaluator="node-type" condition="ek:contractDocument">
+        <forms>
+            <!-- Default View and Edit Form -->
+            <form>
+                <field-visibility>
+                    <!-- Standard out-of-box fields -->
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <show id="mimetype" />
+                    <!-- <show id="cm:author" force="true" />-->
+                    <show id="size" for-mode="view" />
+                    <show id="cm:creator" for-mode="view" />
+                    <show id="cm:created" for-mode="view" />
+                    <show id="cm:modifier" for-mode="view" />
+                    <show id="cm:modified" for-mode="view" />
+
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- cm:dublincore aspect -->
+                    <show id="cm:publisher"/>
+                    <show id="cm:contributor"/>
+                    <show id="cm:type"/>
+                    <show id="cm:identifier"/>
+                    <show id="cm:dcsource"/>
+                    <show id="cm:coverage"/>
+                    <show id="cm:rights"/>
+                    <show id="cm:subject"/>
+
+                    <!-- cm:complianceable aspect -->
+                    <show id="cm:removeAfter" />
+
+                    <!-- cm:effectivity aspect -->
+                    <show id="cm:from"/>
+                    <show id="cm:to"/>
+
+                    <!--  cm:summarizable aspect -->
+                    <show id="cm:summary" />
+
+                    <!-- cm:translatable aspect -->
+                    <show id="cm:translations" />
+
+                    <!-- cm:localizable aspect -->
+                    <show id="cm:locale" />
+
+                    <!-- cm:ownable aspect -->
+                    <show id="cm:owner" />
+
+                    <!-- cm:attachable aspect -->
+                    <show id="cm:attachments" />
+
+                    <!-- cm:emailed aspect -->
+                    <show id="cm:originator" />
+                    <show id="cm:addressee" />
+                    <show id="cm:addressees" />
+                    <show id="cm:sentdate" />
+                    <show id="cm:subjectline" />
+
+                    <!-- exif:exif aspect -->
+                    <show id="exif:dateTimeOriginal" />
+                    <show id="exif:pixelXDimension" />
+                    <show id="exif:pixelYDimension" />
+                    <show id="exif:exposureTime" />
+                    <show id="exif:fNumber" />
+                    <show id="exif:flash" />
+                    <show id="exif:focalLength" />
+                    <show id="exif:isoSpeedRatings" />
+                    <show id="exif:manufacturer" />
+                    <show id="exif:model" />
+                    <show id="exif:software" />
+                    <show id="exif:orientation" />
+                    <show id="exif:xResolution" />
+                    <show id="exif:yResolution" />
+                    <show id="exif:resolutionUnit" />
+
+                    <!-- audio:audio aspect -->
+                    <show id="audio:album" />
+                    <show id="audio:artist" />
+                    <show id="audio:composer" />
+                    <show id="audio:engineer" />
+                    <show id="audio:genre" />
+                    <show id="audio:trackNumber" />
+                    <show id="audio:releaseDate" />
+                    <show id="audio:sampleRate" />
+                    <show id="audio:sampleType" />
+                    <show id="audio:channelType" />
+                    <show id="audio:compressor" />
+
+                    <!-- cm:indexControl aspect -->
+                    <show id="cm:isIndexed" />
+                    <show id="cm:isContentIndexed" />
+
+                    <!-- cm:geographic aspect -->
+                    <show id="cm:latitude" />
+                    <show id="cm:longitude" />
+
+                    <!-- surf:widget aspect -->
+                    <show id="surf:widgetType"/>
+                    <show id="surf:mid"/>
+                    <show id="surf:label"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:contractPartyA"/>
+                    <show id="ek:contractEffectiveDate"/>
+                    <show id="ek:contractExpirationDate"/>
+                    <show id="ek:contractType"/>
+                    <show id="ek:contractStatus"/>
+                    <show id="ek:contractPartyB"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <!-- Standard out-of-box fields -->
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+
+                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl" />
+
+                    <field set="cm:content2cols" id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl" />
+                    </field>
+
+                    <field set="cm:content2cols" id="size">
+                        <control template="/org/alfresco/components/form/controls/size.ftl" />
+                    </field>
+                    <field set="cm:content2cols" id="cm:creator" />
+                    <field set="cm:content2cols" id="cm:created" />
+                    <field set="cm:content2cols" id="cm:modifier" />
+                    <field set="cm:content2cols" id="cm:modified" />
+
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:originator" read-only="true" />
+                    <field id="cm:addressee" read-only="true" />
+                    <field id="cm:addressees" read-only="true" />
+                    <field id="cm:sentdate" read-only="true" />
+                    <field id="cm:subjectline" read-only="true" />
+
+                    <!-- Custom fields -->
+                    <set id="contractDocumentSet" appearance="bordered-panel" label-id="form.set.label.contractDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="contractDocumentSet"/>
+                    <field id="ek:contractEffectiveDate" label-id="form.field.label.contractEffectiveDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
+                    <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                    <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
+                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
+
+                </appearance>
+            </form>
+
+            <!-- Document Library pop-up "Edit Properties" form -->
+            <form id="doclib-simple-metadata">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:contractPartyA"/>
+                    <show id="ek:contractEffectiveDate"/>
+                    <show id="ek:contractExpirationDate"/>
+                    <show id="ek:contractType"/>
+                    <show id="ek:contractStatus"/>
+                    <show id="ek:contractPartyB"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="contractDocumentSet" appearance="bordered-panel" label-id="form.set.label.contractDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="contractDocumentSet"/>
+                    <field id="ek:contractEffectiveDate" label-id="form.field.label.contractEffectiveDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
+                    <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                    <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
+                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
+                </appearance>
+            </form>
+
+            <!-- Document Library "Edit in Alfresco Share" form -->
+            <form id="doclib-inline-edit">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:content" force="true" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:contractPartyA"/>
+                    <show id="ek:contractEffectiveDate"/>
+                    <show id="ek:contractExpirationDate"/>
+                    <show id="ek:contractType"/>
+                    <show id="ek:contractStatus"/>
+                    <show id="ek:contractPartyB"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:content" label-id="">
+                        <control>
+                            <control-param name="editorAppearance">explorer</control-param>
+                            <control-param name="forceEditor">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="contractDocumentSet" appearance="bordered-panel" label-id="form.set.label.contractDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="contractDocumentSet"/>
+                    <field id="ek:contractEffectiveDate" label-id="form.field.label.contractEffectiveDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
+                    <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                    <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
+                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- =========================================================
+         SEARCH FORM CONFIGURATION FOR ek:contractDocument
+         ========================================================= -->
+
+    <config evaluator="model-type" condition="ek:contractDocument">
+        <forms>
+            <!-- Search form -->
+            <form id="search">
+                <field-visibility>
+                    <show id="cm:name"/>
+                    <show id="cm:title" force="true"/>
+                    <show id="cm:description" force="true"/>
+                    <show id="mimetype"/>
+                    <show id="cm:modified"/>
+                    <show id="cm:modifier"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:contractPartyA"/>
+                    <show id="ek:contractEffectiveDate"/>
+                    <show id="ek:contractExpirationDate"/>
+                    <show id="ek:contractType"/>
+                    <show id="ek:contractStatus"/>
+                    <show id="ek:contractPartyB"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <field id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl"/>
+                    </field>
+                    <field id="cm:modifier">
+                        <control>
+                            <control-param name="forceEditable">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:modified">
+                        <control template="/org/alfresco/components/form/controls/daterange.ftl"/>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="contractDocumentSet" appearance="bordered-panel" label-id="form.set.label.contractDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="contractDocumentSet"/>
+                    <field id="ek:contractEffectiveDate" label-id="form.field.label.contractEffectiveDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
+                    <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
+                    <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                    <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
+                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- =========================================================
+         FORM CONFIGURATION FOR ek:complianceReportDocument
+         ========================================================= -->
+
+    <config evaluator="node-type" condition="ek:complianceReportDocument">
+        <forms>
+            <!-- Default View and Edit Form -->
+            <form>
+                <field-visibility>
+                    <!-- Standard out-of-box fields -->
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <show id="mimetype" />
+                    <!-- <show id="cm:author" force="true" />-->
+                    <show id="size" for-mode="view" />
+                    <show id="cm:creator" for-mode="view" />
+                    <show id="cm:created" for-mode="view" />
+                    <show id="cm:modifier" for-mode="view" />
+                    <show id="cm:modified" for-mode="view" />
+
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- cm:dublincore aspect -->
+                    <show id="cm:publisher"/>
+                    <show id="cm:contributor"/>
+                    <show id="cm:type"/>
+                    <show id="cm:identifier"/>
+                    <show id="cm:dcsource"/>
+                    <show id="cm:coverage"/>
+                    <show id="cm:rights"/>
+                    <show id="cm:subject"/>
+
+                    <!-- cm:complianceable aspect -->
+                    <show id="cm:removeAfter" />
+
+                    <!-- cm:effectivity aspect -->
+                    <show id="cm:from"/>
+                    <show id="cm:to"/>
+
+                    <!--  cm:summarizable aspect -->
+                    <show id="cm:summary" />
+
+                    <!-- cm:translatable aspect -->
+                    <show id="cm:translations" />
+
+                    <!-- cm:localizable aspect -->
+                    <show id="cm:locale" />
+
+                    <!-- cm:ownable aspect -->
+                    <show id="cm:owner" />
+
+                    <!-- cm:attachable aspect -->
+                    <show id="cm:attachments" />
+
+                    <!-- cm:emailed aspect -->
+                    <show id="cm:originator" />
+                    <show id="cm:addressee" />
+                    <show id="cm:addressees" />
+                    <show id="cm:sentdate" />
+                    <show id="cm:subjectline" />
+
+                    <!-- exif:exif aspect -->
+                    <show id="exif:dateTimeOriginal" />
+                    <show id="exif:pixelXDimension" />
+                    <show id="exif:pixelYDimension" />
+                    <show id="exif:exposureTime" />
+                    <show id="exif:fNumber" />
+                    <show id="exif:flash" />
+                    <show id="exif:focalLength" />
+                    <show id="exif:isoSpeedRatings" />
+                    <show id="exif:manufacturer" />
+                    <show id="exif:model" />
+                    <show id="exif:software" />
+                    <show id="exif:orientation" />
+                    <show id="exif:xResolution" />
+                    <show id="exif:yResolution" />
+                    <show id="exif:resolutionUnit" />
+
+                    <!-- audio:audio aspect -->
+                    <show id="audio:album" />
+                    <show id="audio:artist" />
+                    <show id="audio:composer" />
+                    <show id="audio:engineer" />
+                    <show id="audio:genre" />
+                    <show id="audio:trackNumber" />
+                    <show id="audio:releaseDate" />
+                    <show id="audio:sampleRate" />
+                    <show id="audio:sampleType" />
+                    <show id="audio:channelType" />
+                    <show id="audio:compressor" />
+
+                    <!-- cm:indexControl aspect -->
+                    <show id="cm:isIndexed" />
+                    <show id="cm:isContentIndexed" />
+
+                    <!-- cm:geographic aspect -->
+                    <show id="cm:latitude" />
+                    <show id="cm:longitude" />
+
+                    <!-- surf:widget aspect -->
+                    <show id="surf:widgetType"/>
+                    <show id="surf:mid"/>
+                    <show id="surf:label"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:reportType"/>
+                    <show id="ek:complianceStatus"/>
+                    <show id="ek:confidentialityLevel"/>
+                    <show id="ek:reportAssociatedDocuments"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <!-- Standard out-of-box fields -->
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+
+                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl" />
+
+                    <field set="cm:content2cols" id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl" />
+                    </field>
+
+                    <field set="cm:content2cols" id="size">
+                        <control template="/org/alfresco/components/form/controls/size.ftl" />
+                    </field>
+                    <field set="cm:content2cols" id="cm:creator" />
+                    <field set="cm:content2cols" id="cm:created" />
+                    <field set="cm:content2cols" id="cm:modifier" />
+                    <field set="cm:content2cols" id="cm:modified" />
+
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:originator" read-only="true" />
+                    <field id="cm:addressee" read-only="true" />
+                    <field id="cm:addressees" read-only="true" />
+                    <field id="cm:sentdate" read-only="true" />
+                    <field id="cm:subjectline" read-only="true" />
+
+                    <!-- Custom fields -->
+                    <set id="complianceReportDocumentSet" appearance="bordered-panel" label-id="form.set.label.complianceReportDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
+                    <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
+                    <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                </appearance>
+            </form>
+
+            <!-- Document Library pop-up "Edit Properties" form -->
+            <form id="doclib-simple-metadata">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <!-- tags and categories -->
+                    <show id="cm:taggable" for-mode="edit" force="true" />
+                    <show id="cm:categories" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:reportType"/>
+                    <show id="ek:complianceStatus"/>
+                    <show id="ek:confidentialityLevel"/>
+                    <show id="ek:reportAssociatedDocuments"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:taggable">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                            <control-param name="params">aspect=cm:taggable</control-param>
+                            <control-param name="createNewItemUri">/api/tag/workspace/SpacesStore</control-param>
+                            <control-param name="createNewItemIcon">tag</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:categories">
+                        <control>
+                            <control-param name="compactMode">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="complianceReportDocumentSet" appearance="bordered-panel" label-id="form.set.label.complianceReportDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
+                    <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
+                    <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                </appearance>
+            </form>
+
+            <!-- Document Library "Edit in Alfresco Share" form -->
+            <form id="doclib-inline-edit">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:content" force="true" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:reportType"/>
+                    <show id="ek:complianceStatus"/>
+                    <show id="ek:confidentialityLevel"/>
+                    <show id="ek:reportAssociatedDocuments"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:content" label-id="">
+                        <control>
+                            <control-param name="editorAppearance">explorer</control-param>
+                            <control-param name="forceEditor">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="complianceReportDocumentSet" appearance="bordered-panel" label-id="form.set.label.complianceReportDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
+                    <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
+                    <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- =========================================================
+         SEARCH FORM CONFIGURATION FOR ek:complianceReportDocument
+         ========================================================= -->
+
+    <config evaluator="model-type" condition="ek:complianceReportDocument">
+        <forms>
+            <!-- Search form -->
+            <form id="search">
+                <field-visibility>
+                    <show id="cm:name"/>
+                    <show id="cm:title" force="true"/>
+                    <show id="cm:description" force="true"/>
+                    <show id="mimetype"/>
+                    <show id="cm:modified"/>
+                    <show id="cm:modifier"/>
+
+                    <!-- Custom fields -->
+                    <show id="ek:docId"/>
+                    <show id="ek:reportType"/>
+                    <show id="ek:complianceStatus"/>
+                    <show id="ek:confidentialityLevel"/>
+                    <show id="ek:reportAssociatedDocuments"/>
+                    <show id="ek:regulatoryFrameworks"/>
+                </field-visibility>
+                <appearance>
+                    <field id="mimetype">
+                        <control template="/org/alfresco/components/form/controls/mimetype.ftl"/>
+                    </field>
+                    <field id="cm:modifier">
+                        <control>
+                            <control-param name="forceEditable">true</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:modified">
+                        <control template="/org/alfresco/components/form/controls/daterange.ftl"/>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="complianceReportDocumentSet" appearance="bordered-panel" label-id="form.set.label.complianceReportDocument"/>
+                    <field id="ek:docId" label-id="form.field.label.docId" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
+                    <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
+                    <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
+                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                    </appearance>
+            </form>
+        </forms>
+    </config>
 </alfresco-config>
+

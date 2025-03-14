@@ -2,7 +2,7 @@
 <model name="hr:contentModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
     <description>Custom HR content model for employee documents.</description>
-    <author>Martin Bergljung</author>
+    <author>Martin Bergljung with some help from AI</author>
     <published>2025-01-15</published>
     <version>1.0</version>
 
