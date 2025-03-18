@@ -1,0 +1,59 @@
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0"
+           xmlns:sys="http://www.alfresco.org/model/system/1.0"
+           xmlns:cm="http://www.alfresco.org/model/content/1.0">
+
+    <!-- Regulatory Frameworks as the root category -->
+    <cm:category>
+        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.name}</cm:name>
+        <sys:node-uuid>regulatory_frameworks_category_root</sys:node-uuid>
+        <cm:subcategories>
+            <!-- Finance as a subcategory of Regulatory Frameworks -->
+            <cm:category>
+                <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.finance.name}</cm:name>
+                <cm:subcategories>
+                    <!-- SEC, FINRA, EPA as subcategories of Finance -->
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.finance.sec.name}</cm:name>
+                    </cm:category>
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.finance.finra.name}</cm:name>
+                    </cm:category>
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.finance.epa.name}</cm:name>
+                    </cm:category>
+                </cm:subcategories>
+            </cm:category>
+
+            <!-- Healthcare as a subcategory of Regulatory Frameworks -->
+            <cm:category>
+                <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.healthcare.name}</cm:name>
+                <cm:subcategories>
+                    <!-- FDA, EMA as subcategories of Healthcare -->
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.healthcare.fda.name}</cm:name>
+                    </cm:category>
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.healthcare.ema.name}</cm:name>
+                    </cm:category>
+                </cm:subcategories>
+            </cm:category>
+
+            <!-- Data Protection as a subcategory of Regulatory Frameworks -->
+            <cm:category>
+                <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.data_protection.name}</cm:name>
+                <cm:subcategories>
+                    <!-- GDPR, HIPAA, ISO as subcategories of Data Protection -->
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.data_protection.gdpr.name}</cm:name>
+                    </cm:category>
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.data_protection.hipaa.name}</cm:name>
+                    </cm:category>
+                    <cm:category>
+                        <cm:name>${bootstrap.categories.cm_generalclassifiable.regulatory_frameworks.data_protection.iso.name}</cm:name>
+                    </cm:category>
+                </cm:subcategories>
+            </cm:category>
+        </cm:subcategories>
+    </cm:category>
+</view:view>

@@ -205,7 +205,12 @@
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
+                    <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="corporatePolicyDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -265,7 +270,12 @@
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="corporatePolicyDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -310,7 +320,12 @@
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="corporatePolicyDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="corporatePolicyDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="corporatePolicyDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="corporatePolicyDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="corporatePolicyDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
         </forms>
@@ -863,7 +878,12 @@
                     <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
                     <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
                     <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="contractDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
                     <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
@@ -927,7 +947,12 @@
                     <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
                     <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
                     <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="contractDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
                     <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
@@ -975,7 +1000,12 @@
                     <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
                     <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
                     <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="contractDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
                     <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
@@ -1008,7 +1038,6 @@
                     <show id="ek:contractType"/>
                     <show id="ek:contractStatus"/>
                     <show id="ek:contractPartyB"/>
-                    <show id="ek:regulatoryFrameworks"/>
                 </field-visibility>
                 <appearance>
                     <field id="mimetype">
@@ -1030,7 +1059,6 @@
                     <field id="ek:contractExpirationDate" label-id="form.field.label.contractExpirationDate" control="datepicker" set="contractDocumentSet"/>
                     <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
                     <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="contractDocumentSet"/>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet"/>
                     <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet"/>
@@ -1210,7 +1238,12 @@
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
                     <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -1268,7 +1301,12 @@
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
                     <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -1311,7 +1349,12 @@
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
                     <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
+                                        <!-- Category field configuration -->
+                    <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/category.ftl">
+                            <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
         </forms>
@@ -1339,7 +1382,6 @@
                     <show id="ek:complianceStatus"/>
                     <show id="ek:confidentialityLevel"/>
                     <show id="ek:reportAssociatedDocuments"/>
-                    <show id="ek:regulatoryFrameworks"/>
                 </field-visibility>
                 <appearance>
                     <field id="mimetype">
@@ -1361,7 +1403,6 @@
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
                     <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                    <field id="ek:regulatoryFrameworks" label-id="form.field.label.regulatoryFrameworks" control="association-picker" set="complianceReportDocumentSet"/>
                     </appearance>
             </form>
         </forms>
