@@ -40,6 +40,12 @@
         </property>
     </bean>
 
+    <!-- Bootstrap Regulatory Frameworks categories
+         Alfresco tracks which module components that have already been executed (based on their id/name), it will only execute this one ones
+         The "sinceVersion" property is only used for documentation and not evaluated at runtime.
+         It is also possible to have a property "dependsOn" with a list of bean references to any module component that MUST be executed before this module component.
+         Neither "appliesFromVersion" nor "sinceVersion" are used for ordering the execution, and "appliesFromVersion" (like appliesToVersion) is only used for
+         filtering which module components are allowed to be executed. -->
     <bean id="ek-project-platform.module.category.bootstrap" class="org.alfresco.repo.module.ImporterModuleComponent" parent="module.baseComponent">
         <property name="moduleId" value="${project.artifactId}" />
         <property name="name" value="regulatoryFrameworkCategoriesBootstrap" />
@@ -58,4 +64,57 @@
         </property>
     </bean>
 
+    <bean id="ek-platform-module.enterprise-knowledgebase.site.bootstrap"
+          class="org.alfresco.repo.admin.patch.impl.SiteLoadPatch" parent="basePatch">
+        <property name="id"><value>ek-platform-module.enterprise-knowledgebase.site.patch.id</value></property>
+        <property name="description"><value>ek-platform-module.enterprise-knowledgebase.site.patch.description</value></property>
+        <property name="fixesFromSchema"><value>0</value></property>
+        <!-- Patches will be applied to the repository only once. This patch should always be run once for every new installation,
+             regardless of Content Services version, so setting the fixesToSchema value to ${version.schema}. -->
+        <property name="fixesToSchema"><value>${version.schema}</value></property>
+        <!-- Note that patches are sorted according to targetSchema, and lowest will be executed first. Execute this one last -->
+        <property name="targetSchema"><value>99999</value></property>
+        <property name="spacesBootstrap" ref="siteLoadBootstrap-Spaces"/>
+        <property name="usersBootstrap" ref="siteLoadBootstrap-Users"/>
+        <property name="siteService" ref="siteService"/>
+        <property name="authorityService" ref="authorityService"/>
+        <property name="behaviourFilter" ref="policyBehaviourFilter"/>
+        <property name="siteName">
+            <value>enterprise-knowledgebase</value>
+        </property>
+        <property name="bootstrapViews">
+            <map>
+                <entry key="contents">
+                    <props>
+                        <prop key="location">alfresco/module/${project.artifactId}/bootstrap/ekb-site/Contents.acp</prop>
+                    </props>
+                </entry>
+                <entry key="groups">
+                    <props>
+                        <prop key="location">alfresco/module/${project.artifactId}/bootstrap/ekb-site/Groups.txt</prop>
+                    </props>
+                </entry>
+                <entry key="users">
+                    <props>
+                        <prop key="location">alfresco/module/${project.artifactId}/bootstrap/ekb-site/Users.acp</prop>
+                    </props>
+                </entry>
+                <entry key="people">
+                    <props>
+                        <prop key="location">alfresco/module/${project.artifactId}/bootstrap/ekb-site/People.acp</prop>
+                    </props>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- Message Resource Bundle -->
+    <bean id="ek-platform-module.patches.resourceBundle"
+          class="org.alfresco.i18n.ResourceBundleBootstrapComponent">
+        <property name="resourceBundles">
+            <list>
+                <value>alfresco.module.${project.artifactId}.messages.patch-messages</value>
+            </list>
+        </property>
+    </bean>
 </beans>

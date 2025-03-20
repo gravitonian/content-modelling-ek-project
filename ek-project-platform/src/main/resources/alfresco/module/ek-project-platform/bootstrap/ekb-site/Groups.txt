@@ -1,0 +1,2 @@
+ekuser=GROUP_site_enterprise-knowledgebase_SiteConsumer
+ek-kb-manager=GROUP_site_enterprise-knowledgebase_SiteManager
