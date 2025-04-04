@@ -20,6 +20,34 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!-- Register repository action for Creating Supplier/Client profile, content-less repo item -->
+    <bean id="create-supplier-client" class="org.acme.platformsample.CreateSupplierClientProfileActionExecuter" parent="action-executer">
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+    </bean>
 
+    <!-- Override the out-of-the-box FileFolderService that is only  allowing cm:content and cm:folder derived nodes.
+         We need to be able to display also cm:cmobject derived nodes (i.e. content-less nodes) -->
+    <bean name="fileFolderService" class="org.acme.platformsample.FileFolderServiceImpl" init-method="init" parent="abstractBaseCopyService">
+        <property name="namespaceService"><ref bean="namespaceService" /></property>
+        <property name="dictionaryService"><ref bean="dictionaryService" /></property>
+        <property name="nodeService"><ref bean="nodeService" /></property>
+        <property name="copyService"><ref bean="copyService" /></property>
+        <property name="searchService"><ref bean="admSearchService" /></property>
+        <property name="contentService"><ref bean="contentService" /></property>
+        <property name="mimetypeService"><ref bean="mimetypeService" /></property>
+        <property name="hiddenAspect"><ref bean="hiddenAspect" /></property>
+        <property name="behaviourFilter" ref="policyBehaviourFilter"></property>
+        <property name="preserveAuditableData" value="${system.auditableData.FileFolderService}"></property>
 
+        <property name="cannedQueryRegistry" ref="fileFolderCannedQueryRegistry"/>
+        <property name="defaultListMaxResults" value="${system.filefolderservice.defaultListMaxResults}"/>
+
+        <property name="systemPaths">
+            <list>
+                <value>/${spaces.company_home.childname}</value>
+            </list>
+        </property>
+    </bean>
 </beans>

@@ -4,16 +4,48 @@
     <!--================================================================================================================
      Make custom types available in "Change Type" form and in the Rules forms
        =============================================================================================================-->
+
     <config evaluator="string-compare" condition="DocumentLibrary">
         <types>
             <type name="cm:content">
-                <!-- Custom types -->
+                <!-- Custom content types -->
                 <subtype name="ek:corporatePolicyDocument" label="Corporate Policy Document" />
                 <subtype name="ek:procedureDocument" label="Procedure Document" />
                 <subtype name="ek:contractDocument" label="Contract Document" />
                 <subtype name="ek:complianceReportDocument" label="Compliance Report Document" />
             </type>
         </types>
+    </config>
+
+    <config evaluator="string-compare" condition="DocLibActions">
+        <actions>
+            <!--  Add a Document Library action to create Supplier/Client Profile - content-less item -->
+            <action id="create-supplier-client"
+                    icon="supplier-client"
+                    type="javascript"
+                    label="actions.folder.create-supplier-client">    <!-- location resources/components/documentlibrary/actions/supplier-client-16.png -->
+                <param name="function">onActionFormDialog</param>
+                <param name="itemKind">action</param>
+                <param name="itemId">create-supplier-client</param>  <!-- Repository action id = Spring Bean id -->
+                <param name="mode">create</param>
+                <param name="destination">{node.nodeRef}</param>
+                <param name="successMessage">actions.folder.create-supplier-client.msg.success</param>
+                <param name="failureMessage">actions.folder.create-supplier-client.msg.failure</param>
+                <evaluator>org.acme.ek-project-share.evaluator.isClientSupplierFolder</evaluator> <!-- Spring bean ID -->
+            </action>
+        </actions>
+
+        <actionGroups>
+            <!-- Folder browse view -->
+            <actionGroup id="folder-browse">
+                <action index="900" id="create-supplier-client" />
+            </actionGroup>
+
+            <!-- Folder details actions -->
+            <actionGroup id="folder-details">
+                <action index="900" id="create-supplier-client" />
+            </actionGroup>
+        </actionGroups>
     </config>
 
     <!--================================================================================================================
@@ -547,10 +579,15 @@
                     <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
                     <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
                     <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
-                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" set="procedureDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Policies</control-param>
+                            <control-param name="allowMany">false</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -605,10 +642,15 @@
                     <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
                     <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
                     <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
-                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" set="procedureDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Policies</control-param>
+                            <control-param name="allowMany">false</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -648,10 +690,15 @@
                     <set id="procedureDocumentSet" appearance="bordered-panel" label-id="form.set.label.procedureDocument"/>
                     <field id="ek:docId" label-id="form.field.label.docId" set="procedureDocumentSet"/>
                     <field id="ek:procedureResponsibleDepartment" label-id="form.field.label.procedureResponsibleDepartment" set="procedureDocumentSet"/>
-                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" control="association-picker" set="procedureDocumentSet"/>
                     <field id="ek:effectiveDate" label-id="form.field.label.effectiveDate" control="datepicker" set="procedureDocumentSet"/>
                     <field id="ek:reviewInterval" label-id="form.field.label.reviewInterval" set="procedureDocumentSet"/>
                     <field id="ek:approvalWorkflowState" label-id="form.field.label.approvalWorkflowState" set="procedureDocumentSet"/>
+                    <field id="ek:procedureRelatedPolicies" label-id="form.field.label.procedureRelatedPolicies" set="procedureDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Policies</control-param>
+                            <control-param name="allowMany">false</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
         </forms>
@@ -886,8 +933,16 @@
                     </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
-                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
-
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" set="contractDocumentSet2">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Supplier_x0020__x0026__x0020_Client_x0020_profiles</control-param>
+                            <control-param name="allowMany">false</control-param>
+                            <!-- The key parameters to show content-less types -->
+                            <control-param name="showTargetLink">true</control-param>
+                            <control-param name="itemType">ek:supplierClientProfileData</control-param>
+                            <control-param name="displayMode">items</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -955,7 +1010,16 @@
                     </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
-                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" set="contractDocumentSet2">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Supplier_x0020__x0026__x0020_Client_x0020_profiles</control-param>
+                            <control-param name="allowMany">false</control-param>
+                            <!-- The key parameters to show content-less types -->
+                            <control-param name="showTargetLink">true</control-param>
+                            <control-param name="itemType">ek:supplierClientProfileData</control-param>
+                            <control-param name="displayMode">items</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
 
@@ -1008,7 +1072,16 @@
                     </field>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
                     <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
-                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" set="contractDocumentSet2">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Supplier_x0020__x0026__x0020_Client_x0020_profiles</control-param>
+                            <control-param name="allowMany">false</control-param>
+                            <!-- The key parameters to show content-less types -->
+                            <control-param name="showTargetLink">true</control-param>
+                            <control-param name="itemType">ek:supplierClientProfileData</control-param>
+                            <control-param name="displayMode">items</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
         </forms>
@@ -1060,8 +1133,13 @@
                     <field id="ek:contractType" label-id="form.field.label.contractType" set="contractDocumentSet"/>
                     <field id="ek:contractStatus" label-id="form.field.label.contractStatus" set="contractDocumentSet"/>
                     <set id="contractDocumentSet2" appearance="bordered-panel" label-id="form.set.label.contractDocumentParties"/>
-                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet"/>
-                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" control="association-picker" set="contractDocumentSet"/>
+                    <field id="ek:contractPartyA" label-id="form.field.label.contractPartyA" set="contractDocumentSet2"/>
+                    <field id="ek:contractPartyB" label-id="form.field.label.contractPartyB" set="contractDocumentSet2">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Supplier_x0020__x0026__x0020_Client_x0020_profiles</control-param>
+                            <control-param name="allowMany">false</control-param>
+                        </control>
+                    </field>
                 </appearance>
             </form>
         </forms>
@@ -1237,8 +1315,13 @@
                     <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
-                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                                        <!-- Category field configuration -->
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                    <!-- Category field configuration -->
                     <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
                         <control template="/org/alfresco/components/form/controls/category.ftl">
                             <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
@@ -1300,8 +1383,13 @@
                     <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
-                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                                        <!-- Category field configuration -->
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                    <!-- Category field configuration -->
                     <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
                         <control template="/org/alfresco/components/form/controls/category.ftl">
                             <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
@@ -1348,8 +1436,13 @@
                     <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
-                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                                        <!-- Category field configuration -->
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                    <!-- Category field configuration -->
                     <field id="ek:regulatoryFrameworks" set="complianceReportDocumentSet">
                         <control template="/org/alfresco/components/form/controls/category.ftl">
                             <control-param name="parentNodeRef">workspace://SpacesStore/regulatory_frameworks_category_root</control-param>
@@ -1402,10 +1495,277 @@
                     <field id="ek:reportType" label-id="form.field.label.reportType" set="complianceReportDocumentSet"/>
                     <field id="ek:complianceStatus" label-id="form.field.label.complianceStatus" set="complianceReportDocumentSet"/>
                     <field id="ek:confidentialityLevel" label-id="form.field.label.confidentialityLevel" set="complianceReportDocumentSet"/>
-                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet"/>
-                    </appearance>
+                    <field id="ek:reportAssociatedDocuments" label-id="form.field.label.reportAssociatedDocuments" control="association-picker" set="complianceReportDocumentSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+            </appearance>
             </form>
         </forms>
     </config>
+
+    <!-- ======================================================================= -->
+    <!-- Supplier/Client Profile content-less item related forms -->
+    <!-- ======================================================================= -->
+
+    <!-- create-supplier-client DocLib action form -->
+    <config evaluator="string-compare" condition="create-supplier-client"> <!-- DocLibAction ID -->
+        <forms>
+            <form>
+                <field-visibility>
+                    <show id="prop_cm_name"/>
+                    <show id="prop_cm_title"/>
+                    <show id="prop_cm_description"/>
+                    <show id="prop_ek_profileName"/>
+                    <show id="prop_ek_profileType"/>
+                    <show id="prop_ek_contactAddress"/>
+                    <show id="prop_ek_contactPhone"/>
+                    <show id="prop_ek_contactEmail"/>
+                    <show id="prop_ek_complianceCertifications"/>
+                    <show id="assoc_ek_profileRelatedContracts"/>
+                </field-visibility>
+                <appearance>
+                    <field id="prop_cm_name" mandatory="true" label-id="form.field.label.name"/>
+                    <field id="prop_cm_title" label-id="form.field.label.title"/>
+                    <field id="prop_cm_description" label-id="form.field.label.description">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="prop_ek_profileName" mandatory="true" label-id="form.field.label.profileName"/>
+                    <field id="prop_ek_profileType" mandatory="true" label-id="form.field.label.profileType">
+                        <control template="/org/alfresco/components/form/controls/selectone.ftl">
+                            <control-param name="options">Supplier|Supplier,Client|Client</control-param>
+                        </control>
+                    </field>
+                    <field id="prop_ek_contactAddress" label-id="form.field.label.contactAddress">
+                        <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+                    </field>
+                    <field id="prop_ek_contactPhone" label-id="form.field.label.contactPhone"/>
+                    <field id="prop_ek_contactEmail" label-id="form.field.label.contactEmail">
+                        <control>
+                            <control-param name="validationType">email</control-param>
+                        </control>
+                    </field>
+                    <field id="prop_ek_complianceCertifications" label-id="form.field.label.complianceCertifications">
+                        <control template="/org/alfresco/components/form/controls/selectmany.ftl">
+                            <control-param name="options">ISO 9001|ISO 9001,ISO 27001|ISO 27001,FDA Approved|FDA Approved,HIPAA Compliant|HIPAA Compliant,GDPR Compliant|GDPR Compliant</control-param>
+                        </control>
+                    </field>
+                    <field id="assoc_ek_profileRelatedContracts" label-id="form.field.label.profileRelatedContracts">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Contracts</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
+    <!-- Standard form configuration for the custom type Supplier/Client Profile content-less items -->
+    <config evaluator="node-type" condition="ek:supplierClientProfileData">
+        <forms>
+            <!-- Default View and Edit Form -->
+            <form>
+                <field-visibility>
+                    <!-- Standard out-of-box fields -->
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+                    <show id="cm:author" force="true" />
+                    <show id="cm:creator" for-mode="view" />
+                    <show id="cm:created" for-mode="view" />
+                    <show id="cm:modifier" for-mode="view" />
+                    <show id="cm:modified" for-mode="view" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:profileName" />
+                    <show id="ek:profileType" />
+                    <show id="ek:contactAddress" />
+                    <show id="ek:contactPhone" />
+                    <show id="ek:contactEmail" />
+                    <show id="ek:complianceCertifications" />
+                    <show id="ek:profileRelatedContracts" />
+                </field-visibility>
+                <appearance>
+                    <!-- Standard out-of-box fields -->
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+
+                    <set id="cm:content2cols" template="/org/alfresco/components/form/2-column-set.ftl" />
+                    <field set="cm:content2cols" id="cm:creator" />
+                    <field set="cm:content2cols" id="cm:created" />
+                    <field set="cm:content2cols" id="cm:modifier" />
+                    <field set="cm:content2cols" id="cm:modified" />
+
+                    <!-- Custom fields -->
+                    <set id="supplierClientProfileDataSet" appearance="bordered-panel" label-id="form.set.label.supplierClientProfileData"/>
+
+                    <field id="ek:profileName" label-id="form.field.label.profileName" set="supplierClientProfileDataSet" />
+                    <field id="ek:profileType" label-id="form.field.label.profileType" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/selectone.ftl">
+                            <control-param name="options">Supplier|Supplier,Client|Client</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:contactAddress" label-id="form.field.label.contactAddress" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactPhone" label-id="form.field.label.contactPhone" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactEmail" label-id="form.field.label.contactEmail" set="supplierClientProfileDataSet">
+                        <control>
+                            <control-param name="validationType">email</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:complianceCertifications" label-id="form.field.label.complianceCertifications" set="supplierClientProfileDataSet" >
+                        <control template="/org/alfresco/components/form/controls/selectmany.ftl">
+                            <control-param name="options">ISO 9001|ISO 9001,ISO 27001|ISO 27001,FDA Approved|FDA Approved,HIPAA Compliant|HIPAA Compliant,GDPR Compliant|GDPR Compliant</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:profileRelatedContracts" label-id="form.field.label.profileRelatedContracts" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Contracts</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                </appearance>
+            </form>
+
+            <!-- Document Library pop-up "Edit Properties" form -->
+            <form id="doclib-simple-metadata">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:profileName" />
+                    <show id="ek:profileType" />
+                    <show id="ek:contactAddress" />
+                    <show id="ek:contactPhone" />
+                    <show id="ek:contactEmail" />
+                    <show id="ek:complianceCertifications" />
+                    <show id="ek:profileRelatedContracts" />
+                </field-visibility>
+                <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:description">
+                        <control>
+                            <control-param name="activateLinks">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="supplierClientProfileDataSet" appearance="bordered-panel" label-id="form.set.label.supplierClientProfileData"/>
+
+                    <field id="ek:profileName" label-id="form.field.label.profileName" set="supplierClientProfileDataSet" />
+                    <field id="ek:profileType" label-id="form.field.label.profileType" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/selectone.ftl">
+                            <control-param name="options">Supplier|Supplier,Client|Client</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:contactAddress" label-id="form.field.label.contactAddress" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactPhone" label-id="form.field.label.contactPhone" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactEmail" label-id="form.field.label.contactEmail" set="supplierClientProfileDataSet">
+                        <control>
+                            <control-param name="validationType">email</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:complianceCertifications" label-id="form.field.label.complianceCertifications" set="supplierClientProfileDataSet" >
+                        <control template="/org/alfresco/components/form/controls/selectmany.ftl">
+                            <control-param name="options">ISO 9001|ISO 9001,ISO 27001|ISO 27001,FDA Approved|FDA Approved,HIPAA Compliant|HIPAA Compliant,GDPR Compliant|GDPR Compliant</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:profileRelatedContracts" label-id="form.field.label.profileRelatedContracts" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Contracts</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                </appearance>
+            </form>
+
+            <!-- Document Library "Edit in Alfresco Share" form -->
+            <form id="doclib-inline-edit">
+                <field-visibility>
+                    <show id="cm:name" />
+                    <show id="cm:content" force="true" />
+                    <show id="cm:title" force="true" />
+                    <show id="cm:description" force="true" />
+
+                    <!-- Custom fields -->
+                    <show id="ek:profileName" />
+                    <show id="ek:profileType" />
+                    <show id="ek:contactAddress" />
+                    <show id="ek:contactPhone" />
+                    <show id="ek:contactEmail" />
+                    <show id="ek:complianceCertifications" />
+                    <show id="ek:profileRelatedContracts" />
+                </field-visibility>
+                <appearance>
+                    <field id="cm:name">
+                        <control>
+                            <control-param name="maxLength">255</control-param>
+                        </control>
+                    </field>
+                    <field id="cm:title">
+                        <control template="/org/alfresco/components/form/controls/textfield.ftl" />
+                    </field>
+                    <field id="cm:content" label-id="">
+                        <control>
+                            <control-param name="editorAppearance">explorer</control-param>
+                            <control-param name="forceEditor">true</control-param>
+                        </control>
+                    </field>
+
+                    <!-- Custom fields -->
+                    <set id="supplierClientProfileDataSet" appearance="bordered-panel" label-id="form.set.label.supplierClientProfileData"/>
+
+                    <field id="ek:profileName" label-id="form.field.label.profileName" set="supplierClientProfileDataSet" />
+                    <field id="ek:profileType" label-id="form.field.label.profileType" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/selectone.ftl">
+                            <control-param name="options">Supplier|Supplier,Client|Client</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:contactAddress" label-id="form.field.label.contactAddress" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactPhone" label-id="form.field.label.contactPhone" set="supplierClientProfileDataSet" />
+                    <field id="ek:contactEmail" label-id="form.field.label.contactEmail" set="supplierClientProfileDataSet">
+                        <control>
+                            <control-param name="validationType">email</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:complianceCertifications" label-id="form.field.label.complianceCertifications" set="supplierClientProfileDataSet" >
+                        <control template="/org/alfresco/components/form/controls/selectmany.ftl">
+                            <control-param name="options">ISO 9001|ISO 9001,ISO 27001|ISO 27001,FDA Approved|FDA Approved,HIPAA Compliant|HIPAA Compliant,GDPR Compliant|GDPR Compliant</control-param>
+                        </control>
+                    </field>
+                    <field id="ek:profileRelatedContracts" label-id="form.field.label.profileRelatedContracts" set="supplierClientProfileDataSet">
+                        <control template="/org/alfresco/components/form/controls/association.ftl">
+                            <control-param name="startLocation">/app:company_home/st:sites/cm:enterprise-knowledgebase/cm:documentLibrary/cm:Contracts</control-param>
+                            <control-param name="allowMany">true</control-param>
+                        </control>
+                    </field>
+                </appearance>
+            </form>
+        </forms>
+    </config>
+
 </alfresco-config>
 

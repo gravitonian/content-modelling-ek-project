@@ -23,4 +23,8 @@
       </property>
    </bean>
 
+   <!-- An evaluator that will check if a content node is the Client & Supplier Profile folder -->
+   <bean id="org.acme.ek-project-share.evaluator.isClientSupplierFolder"
+         class="org.acme.doclibaction.evaluator.CheckIfFolderIsClientSupplierEvaluator" />
+
 </beans>
