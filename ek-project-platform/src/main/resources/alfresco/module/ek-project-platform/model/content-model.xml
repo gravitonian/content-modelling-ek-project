@@ -19,6 +19,7 @@
 
     <!-- Constraints -->
     <constraints>
+        <!-- static department list constraint
         <constraint name="ek:departmentConstraint" type="LIST">
             <parameter name="allowedValues">
                 <list>
@@ -27,6 +28,14 @@
                     <value>Engineering</value>
                     <value>HR</value>
                 </list>
+            </parameter>
+        </constraint>
+        -->
+
+        <!-- dynamic department list constraint -->
+        <constraint name="ek:dynamicDepartmentOptions" type="org.acme.platformsample.DynamicListConstraint">
+            <parameter name="listName">
+                <value>departments</value>
             </parameter>
         </constraint>
 
@@ -187,7 +196,7 @@
                     <type>d:text</type>
                     <mandatory>true</mandatory>
                     <constraints>
-                        <constraint ref="ek:departmentConstraint" />
+                        <constraint ref="ek:dynamicDepartmentOptions" />
                     </constraints>
                 </property>
             </properties>
