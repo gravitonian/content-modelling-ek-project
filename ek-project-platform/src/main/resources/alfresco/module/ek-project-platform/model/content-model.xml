@@ -271,12 +271,12 @@
                     <description>Reference to a Supplier or Client entity</description>
                     <source>
                         <mandatory>true</mandatory>
-                        <many>false</many>
+                        <many>true</many>
                     </source>
                     <target>
                         <class>ek:supplierClientProfileData</class>
                         <mandatory>true</mandatory>
-                        <many>false</many>
+                        <many>true</many>
                     </target>
                 </association>
             </associations>
